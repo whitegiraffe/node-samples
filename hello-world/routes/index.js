@@ -1,4 +1,8 @@
-"use strict";
+
 app.get('/', function(req, res){
-  res.render('index', { title: 'Hello World !' });
+    db.collection('things').find({greeting:/^Hello/},{greeting:true}).limit(10)
+    .toArray(function(err, greetings){
+        if(err) throw err;
+        res.render('index', { title: 'Hello World !', greetings: greetings });
+    });
 });

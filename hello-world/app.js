@@ -1,4 +1,4 @@
-"use strict";
+
 /**
  * Module dependencies.
  */
@@ -6,7 +6,6 @@
 var express = require('express');
 var mongo = require('mongoskin');
 var config = require('./config');
-//var routes = require('./routes');
 
 config.setupenv();
 var app = module.exports = express.createServer();
@@ -30,8 +29,7 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
-// Routes
-//app.get('/', routes.index);
+// Loading routes
 require('./boot')(app, db);
 
 app.listen(process.env.PORT, function(){

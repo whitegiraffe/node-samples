@@ -1,4 +1,4 @@
-"use strict";
+
 /**
  * This source is from express examples "route-loading" (partial editing).
  */

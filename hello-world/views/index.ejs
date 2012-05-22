@@ -1,2 +1,10 @@
 <h1><%= title %></h1>
-<p>Sample program using express examples "route-loading".</p>
+<p>Sample program using express, ejs, and mongoskin. </p>
+
+<% if (greetings.length) { %>
+  <ul>
+    <% for (var i = 0; i < greetings.length; i++ ){ %>
+      <li><%= greetings[i].greeting %></li>
+    <% } %>
+  </ul>
+<% } %>
