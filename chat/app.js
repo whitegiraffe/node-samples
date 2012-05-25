@@ -4,13 +4,15 @@
  */
 
 var express = require('express');
-var mongo = require('mongoskin');
+//var mongo = require('mongoskin');
 var socketio = require('socket.io');
 var config = require('./config');
 
 config.setupenv();
 var app = module.exports = express.createServer();
-var db = mongo.db(process.env.MONGO_URI);
+//var db = mongo.db(process.env.MONGO_URI);
+var db = null;
+var io = socketio.listen(app);
 
 // Configuration
 app.configure(function(){
@@ -30,7 +32,6 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
-var io = socketio.listen(app);
 
 // Loading routes
 require('./boot')(app, db, io);
