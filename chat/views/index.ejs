@@ -4,19 +4,42 @@
       socket.on('connect', function(){
       });
       socket.on('cast msg', function(data){
-          $('#chatlog').prepend('<p>' + data.name + ':' + data.message + '</p>');
+          $('#chatlog').prepend($('<p></p>').
+        	append($('<div></div>').addClass('name').text(data.name)).
+            append($('<div></div>').addClass('message').text(data.message)).hide());
+          $('#chatlog p:hidden:first').slideDown("slow");
       });
-      $('input[type=submit]').click(function(){
+      $('#send-msg').submit(function(){
           var data = {"name"    : $('#name').val(),
                       "message" : $('#message').val()};
           socket.json.emit('post msg', data);
+          $('#message').val('').focus();
+          return false;
       });
   });
 </script>
+<style>
+  #chatlog .name {
+    width: 100px;
+    font-weight: bold;
+    display: inline-block;
+  }
+  #chatlog .message {
+    display: inline-block;
+  }
+  #send-msg input:focus {
+    background-color: #FFFFCC;
+  }
+  #message {
+    width: 400px;
+  }
+</style>
 <div>
-  name:<input type="text" id="name">
-  message:<input type="text" id="message">
-  <input type="submit" value="send">
+  <form id="send-msg">
+    name:<input type="text" id="name" placeholder="nick name" requied autofocus>
+    message:<input type="text" id="message" requied>
+    <input type="submit" value="send" >
+  </form>
   <hr/>
   <div id="chatlog"></div>
 </div>
