@@ -30,20 +30,12 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
+var io = socketio.listen(app);
+
 // Loading routes
-require('./boot')(app, db);
+require('./boot')(app, db, io);
 
 app.listen(process.env.PORT, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 });
 
-var io = socketio.listen(app);
-
-io.sockets.on('connection', function(socket){
-    socket.on('post msg', function(data){
-        io.sockets.json.emit('cast msg', data);
-    });
-    socket.on('disconnect', function(){
-        io.sockets.emit('user disconnected');
-    }); 
-});

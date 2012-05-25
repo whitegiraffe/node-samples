@@ -4,15 +4,25 @@
       socket.on('connect', function(){
       });
       socket.on('cast msg', function(data){
+          var logcolor = "black";
+          if(data.name=="SYSTEM"){
+              logcolor = "blue";
+          }
           $('#chatlog').prepend($('<p></p>').
         	append($('<div></div>').addClass('name').text(data.name)).
-            append($('<div></div>').addClass('message').text(data.message)).hide());
+            append($('<div></div>').addClass('message').text(data.message)).css("color",logcolor).hide());
           $('#chatlog p:hidden:first').slideDown("slow");
       });
       $('#send-msg').submit(function(){
           var data = {"name"    : $('#name').val(),
                       "message" : $('#message').val()};
-          socket.json.emit('post msg', data);
+          socket.json.emit('post msg', data, function(err_msg){
+              if(err_msg){
+                  $("#err-msg").text(err_msg);
+              } else {
+                  $("#err-msg").text("");
+              }
+          });
           $('#message').val('').focus();
           return false;
       });
@@ -31,13 +41,20 @@
     background-color: #FFFFCC;
   }
   #message {
-    width: 400px;
+    width: 300px;
+  }
+  #err-msg {
+    height: 30px;
+    color: red;
+    font-weight: bold;
   }
 </style>
 <div>
+  <h1>Simple Chat</h1>
+  <div id="err-msg"></div>
   <form id="send-msg">
-    name:<input type="text" id="name" placeholder="nick name" requied autofocus>
-    message:<input type="text" id="message" requied>
+    name:<input type="text" id="name" placeholder="nick name" required autofocus>
+    message:<input type="text" id="message" required>
     <input type="submit" value="send" >
   </form>
   <hr/>
