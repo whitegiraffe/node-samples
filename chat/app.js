@@ -4,14 +4,13 @@
  */
 
 var express = require('express');
-//var mongo = require('mongoskin');
+var mongo = require('mongoskin');
 var socketio = require('socket.io');
 var config = require('./config');
 
 config.setupenv();
 var app = module.exports = express.createServer();
-//var db = mongo.db(process.env.MONGO_URI);
-var db = null;
+var db = mongo.db(process.env.MONGO_URI);
 var io = socketio.listen(app);
 
 // Configuration

@@ -8,10 +8,15 @@
           if(data.name=="SYSTEM"){
               logcolor = "blue";
           }
-          $('#chatlog').prepend($('<p></p>').
+
+          var date = new Date();
+          date.setTime(data.date);
+          var localedate = date.toLocaleString();
+
+        $('#chatlog').prepend($('<p></p>').
         	append($('<div></div>').addClass('name').text(data.name)).
-            append($('<div></div>').addClass('message').text(data.message)).css("color",logcolor).hide());
-          $('#chatlog p:hidden:first').slideDown("slow");
+            append($('<div></div>').addClass('message').text(data.message + " (" + localedate + ")")).css("color",logcolor).hide());
+        $('#chatlog p:hidden:first').slideDown("slow");
       });
       $('#send-msg').submit(function(){
           var data = {"name"    : $('#name').val(),
@@ -26,7 +31,7 @@
           $('#message').val('').focus();
           return false;
       });
-  });
+});
 </script>
 <style>
   #chatlog .name {
