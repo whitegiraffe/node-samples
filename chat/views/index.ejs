@@ -11,11 +11,11 @@
 
           var date = new Date();
           date.setTime(data.date);
-          var localedate = date.toLocaleString();
 
         $('#chatlog').prepend($('<p></p>').
-        	append($('<div></div>').addClass('name').text(data.name)).
-            append($('<div></div>').addClass('message').text(data.message + " (" + localedate + ")")).css("color",logcolor).hide());
+            append($('<div></div>').addClass('name').text(data.name)).
+            append($('<div></div>').addClass('message').text(data.message)).
+            append($('<div></div>').addClass('date').text(date.toLocaleString())).css("color",logcolor).hide());
         $('#chatlog p:hidden:first').slideDown("slow");
       });
       $('#send-msg').submit(function(){
@@ -31,7 +31,15 @@
           $('#message').val('').focus();
           return false;
       });
+      
+      $("#chatlog .date").each(function(){
+          var date = new Date();
+          date.setTime($(this).text());
+          $(this).text(date.toLocaleString());
+      });
+            
 });
+
 </script>
 <style>
   #chatlog .name {
@@ -40,7 +48,14 @@
     display: inline-block;
   }
   #chatlog .message {
+    width: 400px;
     display: inline-block;
+  }
+  #chatlog .date {
+    color: gray;
+    display: block;
+    margin-left: 110px;
+    font-size: x-small;
   }
   #send-msg input:focus {
     background-color: #FFFFCC;
@@ -63,5 +78,19 @@
     <input type="submit" value="send" >
   </form>
   <hr/>
-  <div id="chatlog"></div>
+  <div id="chatlog">
+    <% if(data) {
+           data.forEach(function(data) { 
+             var msgColor = "black";
+             if(data.name=="SYSTEM"){
+                msgColor = "blue";
+             }%>
+           <p>
+              <div class="name" style="color:<%=msgColor%>"><%=data.name %></div>
+              <div class="message" style="color:<%=msgColor%>"><%=data.message %></div>
+              <div class="date"><%=data.date %></div>
+           </p>
+    <%     });
+      } %>
+  </div>
 </div>

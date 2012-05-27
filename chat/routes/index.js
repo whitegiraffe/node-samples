@@ -1,6 +1,9 @@
 
 app.get('/', function(req, res){
-  res.render('index', { title: 'Simple Chat' })
+    var now = new Date();
+    readLog(now.getTime(), 30, 0, function(data){
+        res.render('index', { title: 'Simple Chat', data: data });
+    });
 });
 
 var users = {"SYSTEM":"SYSTEM"};
@@ -64,4 +67,22 @@ function createSysMsg(msg) {
     sysMsgData.name = "SYSTEM";
     sysMsgData.message = msg;
     return sysMsgData;
+}
+
+function readLog(startdate, limit, skip, callback) {
+    var conditions = {
+        "date": {$lt: startdate}
+    };
+    var options = {
+        "limit": limit,
+        "skip": skip,
+        "sort": [['date','desc']]
+    };
+    db.collection("chatlog").find(conditions, options).toArray(function(err, data){
+        if(err){
+            console.log(err);
+        } else {
+            callback(data);
+        }
+    });
 }
