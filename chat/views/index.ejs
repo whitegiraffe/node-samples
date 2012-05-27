@@ -13,9 +13,9 @@
           date.setTime(data.date);
 
         $('#chatlog').prepend($('<p></p>').
-            append($('<div></div>').addClass('name').text(data.name)).
-            append($('<div></div>').addClass('message').text(data.message)).
-            append($('<div></div>').addClass('date').text(date.toLocaleString())).css("color",logcolor).hide());
+            append($('<div></div>').addClass('name').text(data.name)).css("color",logcolor).
+            append($('<div></div>').addClass('message').text(data.message)).css("color",logcolor).
+            append($('<div></div>').addClass('date').text(date.toLocaleString())).hide());
         $('#chatlog p:hidden:first').slideDown("slow");
       });
       $('#send-msg').submit(function(){
