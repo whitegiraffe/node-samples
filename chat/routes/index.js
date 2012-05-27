@@ -1,12 +1,13 @@
+var pagesize = 10;
+var users = {"SYSTEM":"SYSTEM"};
 
 app.get('/', function(req, res){
     var now = new Date();
-    readLog(now.getTime(), 30, 0, function(data){
-        res.render('index', { title: 'Simple Chat', data: data });
+    readLog(now.getTime(), pagesize, 0, function(data){
+        res.render('index', { title: 'Simple Chat', logs: data });
     });
 });
 
-var users = {"SYSTEM":"SYSTEM"};
 
 io.sockets.on('connection', function(socket){
     socket.on('post msg', function(data, callback){
@@ -23,6 +24,23 @@ io.sockets.on('connection', function(socket){
             castMsg(createSysMsg( socket.user + " has left the room."));
         }
     }); 
+
+    socket.on('read log', function(param, callback){
+        if(!param.oldestDate){
+            callback("No more data found.");
+        } else {
+            var startDate = new Date();
+            startDate.setTime(param.oldestDate);
+            readLog(startDate.getTime(), pagesize, 0, function(data){
+                if(data && data.length>0 ){
+                    socket.json.emit('load morelog',data);
+                } else {
+                    callback("No more data found.");
+                }
+            });
+        }
+    }); 
+
 });
 
 function checkUser(socket, data, callback){
