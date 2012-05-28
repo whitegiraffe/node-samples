@@ -4,6 +4,18 @@
       socket.on('connect', function(){
       });
       socket.on('cast msg', function(data){
+    	  showMessage(data, "#chatlog", "prepend", "slow");
+      });
+
+      socket.on('load morelog', function(logs){
+          var oldestDate = null;
+          logs.forEach(function(data) {
+        	  oldestDate = showMessage(data, "#more", "before", "fast");
+          });
+          $('#oldestDate').val(oldestDate);
+      });
+
+      function showMessage(data, targetId, position, speed){
           var logcolor = "black";
           if(data.name=="SYSTEM"){
               logcolor = "blue";
@@ -12,33 +24,31 @@
           var date = new Date();
           date.setTime(data.date);
 
-        $('#chatlog').prepend($('<p></p>').
-            append($('<div></div>').addClass('name').text(data.name)).css("color",logcolor).
-            append($('<div></div>').addClass('message').text(data.message)).css("color",logcolor).
-            append($('<div></div>').addClass('date').text(date.toLocaleString())).hide());
-        $('#chatlog p:hidden:first').slideDown("slow");
-      });
+          var elem = $('<p></p>').
+              append($('<div></div>').addClass('name').text(data.name)).css("color",logcolor).
+              append($('<div></div>').addClass('message').text(data.message)).css("color",logcolor).
+              append($('<div></div>').addClass('date').text(date.toLocaleString())).hide();
 
-      socket.on('load morelog', function(logs){
-          var oldestDate = null;
-          logs.forEach(function(data) {
-            var logcolor = "black";
-            if(data.name=="SYSTEM"){
-                logcolor = "blue";
-            }
-            var date = new Date();
-            date.setTime(data.date);
-
-            $('#more').before($('<p></p>').
-                append($('<div></div>').addClass('name').text(data.name)).css("color",logcolor).
-                append($('<div></div>').addClass('message').text(data.message)).css("color",logcolor).
-                append($('<div></div>').addClass('date').text(date.toLocaleString())).hide());
-                $('#chatlog p:hidden:first').slideDown("fast");
-            oldestDate = data.date;
-          });
-          $('#oldestDate').val(oldestDate);
-      });
-
+          switch(position){
+          case "append":
+              $(targetId).append(elem);
+              break;
+          case "prepend":
+              $(targetId).prepend(elem);
+              break;
+          case "before":
+              $(targetId).before(elem);
+              break;
+          case "after":
+              $(targetId).after(elem);
+              break;
+          default:
+        	  $(targetId).prepend(elem);
+          }
+       
+        $('#chatlog p:hidden:first').slideDown(speed);
+        return data.date;
+      }
 
       $('#send-msg').submit(function(){
           var data = {"name"    : $('#name').val(),
@@ -126,13 +136,13 @@
     <% if(logs) {
             var oldestDate = (new Date()).getTime();
             logs.forEach(function(data) { 
-                var msgColor = "black";
+                var logColor = "black";
                 if(data.name=="SYSTEM"){
-                    msgColor = "blue";
+                    logColor = "blue";
                 }%>
             <p>
-              <div class="name" style="color:<%=msgColor%>"><%=data.name %></div>
-              <div class="message" style="color:<%=msgColor%>"><%=data.message %></div>
+              <div class="name" style="color:<%=logColor%>"><%=data.name %></div>
+              <div class="message" style="color:<%=logColor%>"><%=data.message %></div>
               <div class="date"><%=data.date %></div>
             </p>
     <%
