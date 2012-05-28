@@ -2,7 +2,6 @@ var pagesize = 10;
 var users = {"SYSTEM":"SYSTEM"};
 
 app.get('/', function(req, res){
-    var now = new Date();
     res.render('index', { title: 'Simple Chat'});
 });
 
