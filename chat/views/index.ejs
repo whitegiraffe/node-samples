@@ -2,6 +2,9 @@
   $(function(){
       var socket = io.connect();
       socket.on('connect', function(){
+          var param = {"oldestDate" : (new Date()).getTime()};
+          socket.json.emit('read log', param, function(err_msg){
+          });
       });
       socket.on('cast msg', function(data){
     	  showMessage(data, "#chatlog", "prepend", "slow");
@@ -133,23 +136,7 @@
   </form>
   <hr/>
   <div id="chatlog">
-    <% if(logs) {
-            var oldestDate = (new Date()).getTime();
-            logs.forEach(function(data) { 
-                var logColor = "black";
-                if(data.name=="SYSTEM"){
-                    logColor = "blue";
-                }%>
-            <p>
-              <div class="name" style="color:<%=logColor%>"><%=data.name %></div>
-              <div class="message" style="color:<%=logColor%>"><%=data.message %></div>
-              <div class="date"><%=data.date %></div>
-            </p>
-    <%
-                oldestDate = data.date;
-            }); %>
         <p id="more" >more...</p>
-        <input id="oldestDate"type="hidden" value="<%=oldestDate%>">
-    <% } %>
+        <input id="oldestDate"type="hidden" value="<%=(new Date()).getTime()%>">
   </div>
 </div>

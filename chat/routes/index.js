@@ -3,9 +3,7 @@ var users = {"SYSTEM":"SYSTEM"};
 
 app.get('/', function(req, res){
     var now = new Date();
-    readLog(now.getTime(), pagesize, 0, function(data){
-        res.render('index', { title: 'Simple Chat', logs: data });
-    });
+    res.render('index', { title: 'Simple Chat'});
 });
 
 
