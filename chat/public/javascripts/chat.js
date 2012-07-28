@@ -48,7 +48,7 @@ $(function(){
         	  $(targetId).prepend(elem);
           }
        
-        $('#chatlog p:hidden:first').slideDown(speed);
+      $('#chatlog p:hidden:first').slideDown(speed);
         return data.date;
       }
 
