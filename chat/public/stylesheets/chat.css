@@ -1,0 +1,29 @@
+#chatlog .name {
+    width: 100px;
+    font-weight: bold;
+    display: inline-block;
+}
+#chatlog .message {
+    width: 400px;
+    display: inline-block;
+}
+#chatlog .date {
+    color: gray;
+    display: block;
+    margin-left: 110px;
+    font-size: x-small;
+}
+#send-msg input:focus {
+    background-color: #FFFFCC;
+}
+#message {
+    width: 300px;
+}
+#err-msg {
+    height: 30px;
+    color: red;
+    font-weight: bold;
+}
+#more {
+    color: orange;
+}

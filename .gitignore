@@ -6,6 +6,7 @@ lib-cov
 *.out
 *.pid
 *.gz
+*.bak
 
 pids
 logs
@@ -14,5 +15,7 @@ results
 node_modules
 npm-debug.log
 .project
+
+.c9revisions
 
 config_local.js

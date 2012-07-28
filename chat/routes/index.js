@@ -1,4 +1,5 @@
-var pagesize = 10;
+var PAGESIZE = 10;
+var COL_LOG="chatlog";
 var users = {"SYSTEM":"SYSTEM"};
 
 app.get('/', function(req, res){
@@ -28,7 +29,7 @@ io.sockets.on('connection', function(socket){
         } else {
             var startDate = new Date();
             startDate.setTime(param.oldestDate);
-            readLog(startDate.getTime(), pagesize, 0, function(data){
+            readLog(startDate.getTime(), PAGESIZE, 0, function(data){
                 if(data && data.length>0 ){
                     socket.json.emit('load morelog',data);
                 } else {
@@ -64,7 +65,7 @@ function castMsg(data){
 }
 
 function storeMsg(data){
-    db.collection("chatlog").insert(data, {safe: true}, function(err, records){
+    db.collection(COL_LOG).insert(data, {safe: true}, function(err, records){
         if(err){
             console.log(err);
         }
@@ -93,7 +94,7 @@ function readLog(startdate, limit, skip, callback) {
         "skip": skip,
         "sort": [['date','desc']]
     };
-    db.collection("chatlog").find(conditions, options).toArray(function(err, data){
+    db.collection(COL_LOG).find(conditions, options).toArray(function(err, data){
         if(err){
             console.log(err);
         } else {
