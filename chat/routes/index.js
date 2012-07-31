@@ -32,6 +32,7 @@ io.sockets.on('connection', function(socket){
             readLog(startDate.getTime(), PAGESIZE, 0, function(data){
                 if(data && data.length>0 ){
                     socket.json.emit('load morelog',data);
+                    callback(null);
                 } else {
                     callback("No more data found.");
                 }

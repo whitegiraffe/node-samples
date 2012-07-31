@@ -3,6 +3,11 @@ $(function(){
       socket.on('connect', function(){
           var param = {"oldestDate" : (new Date()).getTime()};
           socket.json.emit('read log', param, function(err_msg){
+              if(err_msg){
+                  $("#more").text("");
+              } else {
+                  $("#more").text("more...");
+              }
           });
       });
       socket.on('cast msg', function(data){
@@ -48,8 +53,8 @@ $(function(){
         	  $(targetId).prepend(elem);
           }
        
-      $('#chatlog p:hidden:first').slideDown(speed);
-        return data.date;
+          $('#chatlog p:hidden:first').slideDown(speed);
+          return data.date;
       }
 
       $('#send-msg').submit(function(){
@@ -71,6 +76,7 @@ $(function(){
           socket.json.emit('read log', param, function(err_msg){
               if(err_msg){
                   $("#err-msg").text(err_msg);
+                  $("#more").text("");
               }              
           });
           return false;
